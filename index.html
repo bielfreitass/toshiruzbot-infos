@@ -4,13 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard</title>
-
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
+    * { box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
     body {
       margin: 0;
       min-height: 100vh;
@@ -19,18 +14,8 @@
       animation: bg 12s ease infinite;
       overflow: hidden;
     }
-
-    @keyframes bg {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    canvas {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-    }
+    @keyframes bg { 0% { background-position:0% 50%; } 50% { background-position:100% 50%; } 100% { background-position:0% 50%; } }
+    canvas { position: fixed; inset: 0; z-index: 0; }
 
     /* SPLASH */
     #splash {
@@ -41,20 +26,13 @@
       justify-content: center;
       align-items: center;
       backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       background: rgba(0,0,0,0.35);
       color: #fff;
       z-index: 10;
     }
-
-    #splash img {
-      width: 140px;
-      margin-bottom: 14px;
-    }
-
-    #splash span {
-      font-size: 22px;
-      font-weight: bold;
-    }
+    #splash img { width: 140px; margin-bottom: 14px; }
+    #splash span { font-size: 22px; font-weight: bold; }
 
     /* DASHBOARD */
     #dashboard {
@@ -64,14 +42,12 @@
       padding-top: 100px;
       display: none;
     }
-
     .dashboard-wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 25px;
     }
-
     .plans-title {
       font-size: 26px;
       font-weight: 900;
@@ -80,32 +56,124 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       -webkit-text-stroke: 1px white;
+      z-index: 3;
     }
-
     .panel {
       width: 90%;
       max-width: 420px;
       background: #fff;
       border-radius: 20px;
-      padding: 25px;
+      padding: 30px;
       box-shadow: 0 20px 45px rgba(0,0,0,.35);
     }
 
-    /* PLANO */
-    .plan-box {
-      text-align: left;
+    /* Planos */
+    .plan {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 20px;
     }
-
-    .plan-box h3 {
+    .plan-separator {
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(135deg, #7a0000, #000);
+      margin: 10px 0;
+    }
+    .plan-text {
       font-size: 16px;
-      margin-bottom: 12px;
-      color: #7a0000;
       font-weight: bold;
     }
-
-    .plan-box button {
+    .plan button {
       background: #7a0000;
       color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div id="splash">
+  <img src="./images/logo.png" />
+  <span>Carregando...</span>
+</div>
+
+<div id="dashboard">
+  <div class="dashboard-wrapper">
+    <h1 class="plans-title">PLANOS DO TOSHIRUZBOT-V1</h1>
+
+    <div class="panel">
+      <!-- Teste grátis -->
+      <div class="plan">
+        <span class="plan-text">TESTE GRÁTIS</span>
+        <button onclick="window.open('https://wa.me/558688559115?text=Ol%C3%A1+quero+testar+o+ToshiruzBot-V1+por+1+dia','_blank')">COMPRAR</button>
+      </div>
+
+      <!-- Linha de separação -->
+      <div class="plan-separator"></div>
+
+      <!-- Plano 15 Dias -->
+      <div class="plan">
+        <span class="plan-text">15 Dias (3,50)</span>
+        <button onclick="window.open('https://wa.me/558688559115?text=Olá+quero+comprar+o+plano+15+dias+do+ToshiruzBot-V1','_blank')">COMPRAR</button>
+      </div>
+
+      <!-- Linha de separação -->
+      <div class="plan-separator"></div>
+
+      <!-- Plano 1 Mês -->
+      <div class="plan">
+        <span class="plan-text">1 Mês (7,00)</span>
+        <button onclick="window.open('https://wa.me/558688559115?text=Olá+quero+comprar+o+plano+1+mês+do+ToshiruzBot-V1','_blank')">COMPRAR</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== ESTRELAS CAINDO ===== */
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+resize();
+addEventListener('resize', resize);
+
+function newStar(){
+  return { x: Math.random()*canvas.width, y: Math.random()*-canvas.height, s: Math.random()*2+1, v: Math.random()*1.5+0.5 };
+}
+
+for(let i=0;i<120;i++) stars.push(newStar());
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = 'white';
+  stars.forEach(star=>{
+    ctx.fillRect(star.x, star.y, star.s, star.s);
+    star.y += star.v;
+    if(star.y > canvas.height) Object.assign(star, newStar());
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* ===== SPLASH CONTROL ===== */
+setTimeout(() => {
+  document.getElementById('splash').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+}, 1200);
+</script>
+</body>
+</html>      color: #fff;
       border: none;
       padding: 8px 14px;
       border-radius: 6px;
