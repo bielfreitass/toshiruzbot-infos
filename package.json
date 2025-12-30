@@ -1,0 +1,23 @@
+{
+  "name": "star-apis",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "body-parser": "^2.2.1",
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "lowdb": "^7.0.1",
+    "nanoid": "^5.1.6",
+    "resend": "^6.6.0",
+    "url": "^0.11.4"
+  }
+}

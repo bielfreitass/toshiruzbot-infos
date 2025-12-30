@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #000, #7a0000, #000);
+      background-size: 400% 400%;
+      animation: bg 12s ease infinite;
+      overflow: hidden;
+    }
+
+    @keyframes bg {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    /* SPLASH */
+    #splash {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(8px);
+      background: rgba(0,0,0,0.35);
+      color: #fff;
+      z-index: 10;
+    }
+
+    #splash img {
+      width: 140px;
+      margin-bottom: 14px;
+    }
+
+    #splash span {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    /* DASHBOARD */
+    #dashboard {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      padding-top: 100px;
+      display: none;
+    }
+
+    .dashboard-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .plans-title {
+      font-size: 26px;
+      font-weight: 900;
+      text-align: center;
+      background: linear-gradient(180deg, #ff0000, #000000);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      -webkit-text-stroke: 1px white;
+    }
+
+    .panel {
+      width: 90%;
+      max-width: 420px;
+      background: #fff;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 20px 45px rgba(0,0,0,.35);
+    }
+
+    /* PLANO */
+    .plan-box {
+      text-align: left;
+    }
+
+    .plan-box h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+      color: #7a0000;
+      font-weight: bold;
+    }
+
+    .plan-box button {
+      background: #7a0000;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .plan-box button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="stars"></canvas>
+
+  <!-- SPLASH -->
+  <div id="splash">
+    <img src="./images/logo.png" />
+    <span>Carregando...</span>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard">
+    <div class="dashboard-wrapper">
+      <h1 class="plans-title">PLANOS DO TOSHIRUZBOT-V1</h1>
+
+      <div class="panel">
+        <div class="plan-box">
+          <h3>TESTE GRÁTIS</h3>
+          <button onclick="comprarTeste()">COMPRAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ===== ESTRELAS CAINDO ===== */
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+
+    function resize() {
+      canvas.width = innerWidth;
+      canvas.height = innerHeight;
+    }
+    resize();
+    addEventListener('resize', resize);
+
+    function newStar() {
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * -canvas.height,
+        s: Math.random() * 2 + 1,
+        v: Math.random() * 1.5 + 0.5
+      };
+    }
+
+    for (let i = 0; i < 120; i++) stars.push(newStar());
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'white';
+
+      stars.forEach(star => {
+        ctx.fillRect(star.x, star.y, star.s, star.s);
+        star.y += star.v;
+        if (star.y > canvas.height) Object.assign(star, newStar());
+      });
+
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    /* ===== SPLASH ===== */
+    setTimeout(() => {
+      document.getElementById('splash').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+    }, 1200);
+
+    /* ===== WHATSAPP ===== */
+    function comprarTeste() {
+      const msg = "Olá, quero testar o ToshiruzBot-V1 por 1 dia";
+      const url = "https://wa.me/558688559115?text=" + encodeURIComponent(msg);
+      window.open(url, "_blank");
+    }
+  </script>
+
+</body>
+</html>
