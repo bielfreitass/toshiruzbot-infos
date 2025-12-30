@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard - ToshiruzBot-V1</title>
+<title>Pacotes do ToshiruzBot-V1</title>
 <style>
 * { box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; margin: 0; padding: 0; }
 body {
@@ -35,6 +35,73 @@ canvas { position: fixed; inset: 0; z-index: 0; }
     background: linear-gradient(180deg, #ff0000, #000);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; -webkit-text-stroke:1px white;
     margin-bottom: 20px;
+}
+.panel { width:100%; background:#fff; border-radius:20px; padding:30px; box-shadow:0 20px 45px rgba(0,0,0,.35); display:flex; flex-direction:column; gap:15px; }
+.panel h2 { font-size:18px; color:#7a0000; }
+.buy-btn { background:#7a0000; color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer; font-size:14px; text-align:left; }
+.separator { height:2px; background: linear-gradient(180deg, #7a0000, #000); margin:10px 0; }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div id="splash">
+    <img src="./images/logo.png" />
+    <span>Carregando...</span>
+</div>
+
+<div id="dashboard">
+    <div class="dashboard-wrapper">
+        <h1 class="plans-title">PLANOS DO TOSHIRUZBOT-V1</h1>
+
+        <!-- PLANO TESTE GRÁTIS -->
+        <div class="panel">
+            <h2>TESTE GRÁTIS</h2>
+            <button class="buy-btn" onclick="window.open('https://wa.me/558688559115?text=Ol%C3%A1+quero+testar+o+ToshiruzBot-V1+por+1+dia','_blank')">COMPRAR</button>
+            <div class="separator"></div>
+            <h2>15 Dias (3,50)</h2>
+            <button class="buy-btn" onclick="window.open('https://wa.me/558688559115?text=Ol%C3%A1+quero+adquirir+ToshiruzBot-V1+por+15+dias','_blank')">COMPRAR</button>
+            <div class="separator"></div>
+            <h2>1 Mês (7,00)</h2>
+            <button class="buy-btn" onclick="window.open('https://wa.me/558688559115?text=Ol%C3%A1+quero+adquirir+ToshiruzBot-V1+por+1+m%C3%AAs','_blank')">COMPRAR</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+// ===== ESTRELAS =====
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+function resize(){ canvas.width=innerWidth; canvas.height=innerHeight; }
+resize(); window.addEventListener('resize',resize);
+function newStar(){ return { x:Math.random()*canvas.width, y:Math.random()*-canvas.height, s:Math.random()*2+1, v:Math.random()*1.5+0.5 }; }
+for(let i=0;i<120;i++) stars.push(newStar());
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='white';
+    stars.forEach(star=>{
+        ctx.fillRect(star.x,star.y,star.s,star.s);
+        star.y+=star.v;
+        if(star.y>canvas.height) Object.assign(star,newStar());
+    });
+    requestAnimationFrame(animate);
+}
+animate();
+
+// ===== SPLASH =====
+document.addEventListener('DOMContentLoaded', ()=>{
+    setTimeout(()=>{
+        document.getElementById('splash').style.display='none';
+        document.getElementById('dashboard').style.display='flex';
+    },1200);
+});
+</script>
+
+</body>
+</html>    margin-bottom: 20px;
 }
 .panel { width:100%; background:#fff; border-radius:20px; padding:30px; box-shadow:0 20px 45px rgba(0,0,0,.35); display:flex; flex-direction:column; gap:15px; }
 .panel h2 { font-size:18px; color:#7a0000; }
